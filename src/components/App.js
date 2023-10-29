@@ -29,6 +29,17 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [cards, setCards] = useState([]);
+  
+  useEffect(() => {
+    Promise.all([api.getUser(), api.getInitialCards()])
+      .then(([user, cards]) => {
+        setCurrentUser(user);
+        setCards(cards);
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
