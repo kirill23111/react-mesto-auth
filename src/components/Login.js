@@ -23,19 +23,18 @@ const Login = ({ handleLogin, handleOpenInfoTooltip }) => {
       return;
     }
 
-    handleLogin(formValue).then((data) => {
-
-      navigate("/");
-      handleOpenInfoTooltip({
-        success: true,
-        message: "Вы успешно залогинились!",
-      });
-    })
-
-    .catch(error => {
+    handleLogin(formValue)
+      .then(() => {
+        navigate("/");
+        handleOpenInfoTooltip({
+          success: true,
+          message: "Вы успешно залогинились!",
+        });
+      }).catch((error) => {
+        console.log(error)
         return handleOpenInfoTooltip({
           success: false,
-          message: 'Что-то пошло не так! Попробуйте ещё раз.',
+          message: "Что-то пошло не так! Попробуйте ещё раз.",
         });
       });
   };

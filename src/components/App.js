@@ -27,11 +27,12 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
-  // const [email, setEmail] = useState('email@mail.com');
+  const [email, setEmail] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
+    if (!isLoggedIn) return;
     Promise.all([api.getUser(), api.getInitialCards()])
       .then(([user, cards]) => {
         setCurrentUser(user);
@@ -40,7 +41,7 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -51,8 +52,7 @@ function App() {
       auth
         .checkToken(token)
         .then((user) => {
-          setCurrentUser(user.data);
-          // setEmail(user.email);
+          setEmail(user.data.email);
           setIsLoggedIn(true);
         })
         .catch(() => {
@@ -181,7 +181,7 @@ function App() {
     localStorage.clear();
   }
 
-  function handleLogin({ email, password }, user) {
+  function handleLogin({ email, password }) {
     return auth.authorize(email, password).then(({ token }) => {
       if (!token) {
         return {
@@ -190,6 +190,7 @@ function App() {
       }
 
       localStorage.setItem("jwt", token);
+      setEmail(email);
       setIsLoggedIn(true);
     });
   }
@@ -207,7 +208,11 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <BrowserRouter>
-          <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+          <Header
+            email={email}
+            isLoggedIn={isLoggedIn}
+            handleLogout={handleLogout}
+          />
           <Routes>
             <Route
               path="/"

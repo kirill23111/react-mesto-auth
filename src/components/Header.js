@@ -48,7 +48,7 @@ import CurrentUserContext from "../contexts/CurrentUserContext";
 import { Link } from "react-router-dom";
 import logo from "../images/header.svg";
 
-function Header({ isLoggedIn, handleLogout }) {
+function Header({ isLoggedIn, handleLogout, email }) {
   const location = useLocation();
   const currentUser = useContext(CurrentUserContext);
   const [mobileMenuIsOpened, setMobileMenuIsOpened] = useState(false);
@@ -91,7 +91,7 @@ function Header({ isLoggedIn, handleLogout }) {
               isMobileScreen ? "" : "header__info_open"
             }`}
           >
-            <p className="header__email">{currentUser?.email}</p>
+            <p className="header__email">{email}</p>
             <button className="header__button" onClick={handleLogout}>
               Выйти
             </button>
