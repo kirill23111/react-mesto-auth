@@ -27,9 +27,10 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
+  // const [email, setEmail] = useState('email@mail.com');
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [cards, setCards] = useState([]);
-  
+
   useEffect(() => {
     Promise.all([api.getUser(), api.getInitialCards()])
       .then(([user, cards]) => {
@@ -51,6 +52,7 @@ function App() {
         .checkToken(token)
         .then((user) => {
           setCurrentUser(user.data);
+          // setEmail(user.email);
           setIsLoggedIn(true);
         })
         .catch(() => {
@@ -179,7 +181,7 @@ function App() {
     localStorage.clear();
   }
 
-  function handleLogin({ email, password }) {
+  function handleLogin({ email, password }, user) {
     return auth.authorize(email, password).then(({ token }) => {
       if (!token) {
         return {
@@ -188,12 +190,7 @@ function App() {
       }
 
       localStorage.setItem("jwt", token);
-      setCurrentUser({email})
       setIsLoggedIn(true);
-      // return auth.checkToken(token).then((user) => {
-      //   setCurrentUser(user.data);
-      //   setIsLoggedIn(true);
-      // });
     });
   }
 
