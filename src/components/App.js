@@ -39,7 +39,7 @@ function App() {
       auth
         .checkToken(token)
         .then((user) => {
-          setCurrentUser(user);
+          setCurrentUser(user.data);
           setIsLoggedIn(true);
         })
         .catch(() => {
@@ -177,10 +177,12 @@ function App() {
       }
 
       localStorage.setItem("jwt", token);
-      return auth.checkToken(token).then((user) => {
-        setCurrentUser(user.data);
-        setIsLoggedIn(true);
-      });
+      setCurrentUser({email})
+      setIsLoggedIn(true);
+      // return auth.checkToken(token).then((user) => {
+      //   setCurrentUser(user.data);
+      //   setIsLoggedIn(true);
+      // });
     });
   }
 

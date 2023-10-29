@@ -24,19 +24,20 @@ const Register = ({ handleOpenInfoTooltip }) => {
       return;
     }
     auth.register(formValue.email, formValue.password).then((data) => {
-      if (data.error) {
-        handleOpenInfoTooltip({
-          success: false,
-          message: data.error,
-        });
-        return;
-      }
       navigate("/login");
       handleOpenInfoTooltip({
         success: true,
         message: "Вы успешно зарегестрированы!",
       });
-    });
+    })
+    .catch(error => {
+
+        handleOpenInfoTooltip({
+          success: false,
+          message: 'Что-то пошло не так! Попробуйте ещё раз.',
+        });
+        return;
+      });
   };
 
   return (

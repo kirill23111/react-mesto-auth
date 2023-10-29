@@ -24,19 +24,20 @@ const Login = ({ handleLogin, handleOpenInfoTooltip }) => {
     }
 
     handleLogin(formValue).then((data) => {
-      if (data?.error) {
-        return handleOpenInfoTooltip({
-          success: false,
-          message: data.error,
-        });
-      }
 
       navigate("/");
       handleOpenInfoTooltip({
         success: true,
         message: "Вы успешно залогинились!",
       });
-    });
+    })
+
+    .catch(error => {
+        return handleOpenInfoTooltip({
+          success: false,
+          message: 'Что-то пошло не так! Попробуйте ещё раз.',
+        });
+      });
   };
 
   return (
